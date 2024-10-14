@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Extra\Extra.py" />
     <Compile Include="Logic\server_logic.py" />
     <Compile Include="Logic\client_logic.py" />
     <Compile Include="Minimalistic\client_terminal.py" />
@@ -31,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Minimalistic\" />
+    <Folder Include="Extra\" />
     <Folder Include="UI\" />
     <Folder Include="Logic\" />
   </ItemGroup>
