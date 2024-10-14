@@ -23,11 +23,14 @@
   <ItemGroup>
     <Compile Include="Logic\server_logic.py" />
     <Compile Include="Logic\client_logic.py" />
+    <Compile Include="Minimalistic\client_terminal.py" />
+    <Compile Include="Minimalistic\server_terminal.py" />
     <Compile Include="Minimalistic_Conversation.py" />
     <Compile Include="UI\server_window.py" />
     <Compile Include="UI\client_window.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Minimalistic\" />
     <Folder Include="UI\" />
     <Folder Include="Logic\" />
   </ItemGroup>
