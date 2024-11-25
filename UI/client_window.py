@@ -55,19 +55,16 @@ class ClientWindow:
         port = int(self.port_entry.get() if self.port_entry.get().isdigit() else 0)
 
         if not ip or port == 0:
-            self.display_message("錯誤: IP位址或埠號未提供\n")
+            self.display_message("錯誤: IP位址或埠號未提供或不合法\n")
+            self.clear_fields()
             return
 
         # 簡單的IP格式驗證
         ip_pattern = re.compile("^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)){3}$")
         if not ip_pattern.match(ip) and not ip == "localhost":
             self.display_message("錯誤: IP位址格式不正確\n")
+            self.clear_fields()
             return
-
-        if port == 0:
-            self.display_message("錯誤: 埠號不合法\n")
-            return
-
         
         self.ip_entry.config(state='disabled')
         self.port_entry.config(state='disabled')
@@ -78,8 +75,8 @@ class ClientWindow:
         self.connection_state = True
 
     def close_connection(self):
-        self.client_logic.close_connection()
         self.connection_state = False
+        self.client_logic.close_connection()
 
         self.ip_entry.config(state='normal')
         self.port_entry.config(state='normal')
@@ -87,9 +84,16 @@ class ClientWindow:
         self.connect_button.config(text="連接", command=self.connect_to_server)
 
     def display_message(self, message):
-        self.chat_box.config(state='normal')
-        self.chat_box.insert(tk.END, message + "\n")
-        self.chat_box.config(state='disabled')
+        try:
+            self.chat_box.config(state='normal')
+            self.chat_box.insert(tk.END, message + "\n")
+            self.chat_box.config(state='disabled')
+        except:
+            pass
+    
+    def clear_fields(self):
+        self.ip_entry.delete(0, tk.END)
+        self.port_entry.delete(0, tk.END)
 
     def send_message(self, event=None):
         message = self.message_entry.get()
