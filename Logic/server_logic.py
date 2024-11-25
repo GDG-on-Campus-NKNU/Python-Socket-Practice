@@ -29,16 +29,16 @@ class ServerLogic:
             while True:
                 message = self.client_socket.recv(1024).decode()
                 if message:
-                    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    self.ui.display_message(f"客戶端 {timestamp}: {message}")
+                    timestamp = datetime.now().strftime('%H:%M:&S')
+                    self.ui.display_message(f"{timestamp} - 客戶端: {message}")
         except:
             self.ui.display_message(f"<連線已中斷: {'伺服器' if not self.ui.connection_state else '客戶端'}已中斷一個現存的連線>\n")
             self.ui.close_connection()
 
     def send_message(self, message):
         if message and self.client_socket:
-            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            self.ui.display_message(f"伺服器 {timestamp}: {message}")
+            timestamp = datetime.now().strftime('%H:%M:%S')
+            self.ui.display_message(f"{timestamp} - 伺服器: {message}")
             self.client_socket.send(message.encode())
 
     def close_connection(self):
