@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import scrolledtext
 from tkinter import font
 import re
+from tkinter import messagebox as mb
 from Logic.client_logic import ClientLogic
 
 class ClientWindow:
@@ -44,7 +45,7 @@ class ClientWindow:
         # Configure grid to be resizable
         self.master.grid_columnconfigure(1, weight=1)
         self.master.grid_rowconfigure(3, weight=1)
-        self.master.protocol("WM_DELETE_WINDOW", self.close_connection)
+        self.master.protocol("WM_DELETE_WINDOW", self.on_window_closure)
 
         self.client_logic = ClientLogic(self)
         self.connection_state = False
@@ -96,3 +97,11 @@ class ClientWindow:
             self.client_logic.send_message(message)
             self.message_entry.delete(0, tk.END)
 
+    def on_window_closure(self):
+        self.master.after(0, self._show_closure_prompt)
+        
+    def _show_closure_prompt(self):
+        result = mb.askyesno("確認", "確定要關閉對話窗口嗎？", parent=self.master)
+        if result:
+            self.close_connection()
+            self.master.destroy()

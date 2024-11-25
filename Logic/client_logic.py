@@ -1,6 +1,7 @@
 ﻿import socket
 import threading
 from datetime import datetime
+from tkinter import simpledialog
 
 class ClientLogic:
     def __init__(self, ui):
@@ -11,7 +12,7 @@ class ClientLogic:
         try:
             self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.client_socket.connect((ip, port))
-            self.ui.display_message(f"<已建立與 127.0.0.1 的連線>\n")
+            self.ui.display_message(f"<已建立與 {ip} 的連線>\n")
             threading.Thread(target=self.receive_message).start()
         except:
             self.ui.display_message("無法連線，因為目標電腦拒絕連線。\n")
@@ -37,3 +38,4 @@ class ClientLogic:
     def close_connection(self):
         if self.client_socket:
             self.client_socket.close()
+           

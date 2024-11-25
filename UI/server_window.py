@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import scrolledtext
 from tkinter import font
 import re
+from tkinter import messagebox as mb
 from Logic.server_logic import ServerLogic
 
 class ServerWindow:
@@ -43,7 +44,7 @@ class ServerWindow:
         # Configure grid to be resizable
         self.master.grid_columnconfigure(1, weight=1)
         self.master.grid_rowconfigure(3, weight=1)
-        self.master.protocol("WM_DELETE_WINDOW", self.close_connection)
+        self.master.protocol("WM_DELETE_WINDOW", self.on_window_closure)
 
         self.server_logic = ServerLogic(self)
         self.connection_state = False
@@ -59,7 +60,7 @@ class ServerWindow:
         # 簡單的IP格式驗證
         ip_pattern = re.compile("^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)){3}$")
         if not ip_pattern.match(ip) and not ip == "localhost":
-            self.display_message("錯誤: IP位址格式不正n")
+            self.display_message("錯誤: IP位址格式不正確\n")
             return
 
         if port == 0:
@@ -69,7 +70,7 @@ class ServerWindow:
         self.ip_entry.config(state='disabled')
         self.port_entry.config(state='disabled')
 
-        self.listen_button.config(text="關閉連線", command=self.close_connection)
+        self.listen_button.config(text="關閉連線", command=self.on_window_closure)
 
         self.server_logic.start_listening(ip, port)
         self.connection_state = True
@@ -93,3 +94,12 @@ class ServerWindow:
         if message:
             self.server_logic.send_message(message)
             self.message_entry.delete(0, tk.END)
+            
+    def on_window_closure(self):
+        self.master.after(0, self._show_closure_prompt)
+        
+    def _show_closure_prompt(self):
+        result = mb.askyesno("確認", "確定要關閉對話窗口嗎？", parent=self.master)
+        if result:
+            self.close_connection()
+            self.master.destroy()

@@ -29,7 +29,7 @@ class ServerLogic:
             while True:
                 message = self.client_socket.recv(1024).decode()
                 if message:
-                    timestamp = datetime.now().strftime('%H:%M:&S')
+                    timestamp = datetime.now().strftime('%H:%M:%S')
                     self.ui.display_message(f"{timestamp} - 客戶端: {message}")
         except:
             self.ui.display_message(f"<連線已中斷: {'伺服器' if not self.ui.connection_state else '客戶端'}已中斷一個現存的連線>\n")
